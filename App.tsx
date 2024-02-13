@@ -1,118 +1,112 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React from 'react';
-import type {PropsWithChildren} from 'react';
+import React, { useEffect } from 'react';
+import { withIAPContext, requestPurchase, useIAP } from 'react-native-iap';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
+  Platform,
   View,
+  Text,
+  Button,
+  SafeAreaView,
+  StyleSheet,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const skus = Platform.select({
+  ios: ['TreatmentAppointment2', 'TreatmentAppointmentExtend2'],
+  android: ['telemedicine.reservation.150000won'],
+});
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+const App = () => {
+  const {
+    initConnectionError,
+    currentPurchase,
+    currentPurchaseError,
+    products,
+    getProducts,
+    finishTransaction,
+  } = useIAP();
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+  useEffect(() => {
+    if (initConnectionError) {
+      console.log(Platform.OS, 'initConnectionError', initConnectionError);
+    }
+    if (currentPurchaseError) {
+      console.log(Platform.OS, 'currentPurchaseError', currentPurchaseError);
+    }
+  }, [initConnectionError, currentPurchaseError]);
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  useEffect(() => {
+    if (currentPurchase) {
+      console.log(currentPurchase);
+    }
+  }, [currentPurchase]);
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  const handlePurchase = async (sku: string) => {
+    await requestPurchase({ sku });
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
+    <SafeAreaView style={styles.backgroundContainer}>
+      <Text style={styles.bold}>OKDOC 인앱결제 테스트</Text>
+
+      {!products.length && (
+        <Button
+          title="Get the products"
+          onPress={async () => {
+            if (skus) {
+              try {
+                await getProducts({ skus });
+              } catch (err) {
+                console.log('err', err);
+              }
+            }
+          }}
+        />
+      )}
+
+      {products.map(product => (
+        <View key={product.productId}>
+          <Text>{product.productId}</Text>
+
+          <Button
+            title="Buy"
+            onPress={() => handlePurchase(product.productId)}
+          />
         </View>
-      </ScrollView>
+      ))}
+
+      {currentPurchase && (
+        <Button
+          title="finishTransaction"
+          onPress={async () => {
+            console.log(
+              '====================finishTransaction start====================',
+            );
+            try {
+              const result = await finishTransaction({
+                purchase: currentPurchase,
+                isConsumable: true,
+                developerPayloadAndroid: undefined,
+              });
+              console.log('finishTransaction', result);
+            } catch (err) {
+              console.log('err', err);
+            }
+          }}
+        />
+      )}
     </SafeAreaView>
   );
-}
+};
+
+export default withIAPContext(App);
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  backgroundContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
+  bold: {
+    fontSize: 20,
     fontWeight: '700',
   },
 });
-
-export default App;
