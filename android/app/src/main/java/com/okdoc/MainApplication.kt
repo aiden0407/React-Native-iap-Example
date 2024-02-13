@@ -1,4 +1,4 @@
-package com.okdoc
+package app.nokdoc.api
 
 import android.app.Application
 import com.facebook.react.PackageList

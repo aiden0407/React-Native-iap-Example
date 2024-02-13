@@ -74,13 +74,14 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.okdoc"
+    namespace "app.nokdoc.api"
     defaultConfig {
-        applicationId "com.okdoc"
+        applicationId "app.nokdoc.api"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        missingDimensionStrategy "store", "play"
     }
     signingConfigs {
         debug {
