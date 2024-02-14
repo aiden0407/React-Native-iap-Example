@@ -9,10 +9,7 @@ import {
   StyleSheet,
 } from 'react-native';
 
-const skus = Platform.select({
-  ios: ['TreatmentAppointment2', 'TreatmentAppointmentExtend2'],
-  android: ['telemedicine.reservation.150000won'],
-});
+const skus = ['telemedicine.appointment', 'telemedicine.extension'];
 
 const App = () => {
   const {
@@ -26,21 +23,36 @@ const App = () => {
 
   useEffect(() => {
     if (initConnectionError) {
-      console.log(Platform.OS, 'initConnectionError', initConnectionError);
+      console.log(Platform.OS, 'initConnectionError: ', initConnectionError);
     }
     if (currentPurchaseError) {
-      console.log(Platform.OS, 'currentPurchaseError', currentPurchaseError);
+      console.log(Platform.OS, 'currentPurchaseError: ', currentPurchaseError);
     }
   }, [initConnectionError, currentPurchaseError]);
 
   useEffect(() => {
     if (currentPurchase) {
+      console.log('==================== currentPurchase ====================');
       console.log(currentPurchase);
     }
   }, [currentPurchase]);
 
   const handlePurchase = async (sku: string) => {
-    await requestPurchase({ sku });
+    const params = Platform.select({
+      ios: {
+        sku: sku,
+      },
+      android: {
+        skus: [sku],
+      },
+    });
+    if (params) {
+      try {
+        await requestPurchase(params);
+      } catch (err) {
+        console.log('err', err);
+      }
+    }
   };
 
   return (
@@ -78,7 +90,7 @@ const App = () => {
           title="finishTransaction"
           onPress={async () => {
             console.log(
-              '====================finishTransaction start====================',
+              '==================== finishTransaction ====================',
             );
             try {
               const result = await finishTransaction({
