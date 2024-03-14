@@ -1,4 +1,4 @@
-package app.okdoc.insunginfo
+package kr.co.insunginfo.okdoc
 
 import android.app.Application
 import com.facebook.react.PackageList

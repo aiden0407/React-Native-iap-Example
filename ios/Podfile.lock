@@ -1076,6 +1076,8 @@ PODS:
     - React-jsi (= 0.73.4)
     - React-logger (= 0.73.4)
     - React-perflogger (= 0.73.4)
+  - RNCClipboard (1.13.2):
+    - React-Core
   - RNIap (12.12.2):
     - React-Core
   - RNScreens (3.29.0):
@@ -1157,6 +1159,7 @@ DEPENDENCIES:
   - React-runtimescheduler (from `../node_modules/react-native/ReactCommon/react/renderer/runtimescheduler`)
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
   - RNIap (from `../node_modules/react-native-iap`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -1272,6 +1275,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/react/utils"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNCClipboard:
+    :path: "../node_modules/@react-native-clipboard/clipboard"
   RNIap:
     :path: "../node_modules/react-native-iap"
   RNScreens:
@@ -1339,6 +1344,7 @@ SPEC CHECKSUMS:
   React-runtimescheduler: 96c8bfa2ea02443b79cd9359afb91dfd1bf3b958
   React-utils: 6e5ad394416482ae21831050928ae27348f83487
   ReactCommon: 5fd44dbef85dfbafc87facae700c66d2da71b2cb
+  RNCClipboard: 60fed4b71560d7bfe40e9d35dea9762b024da86d
   RNIap: 123a98c6187f09ce0ed5897569abf01d9db416b0
   RNScreens: b582cb834dc4133307562e930e8fa914b8c04ef2
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17

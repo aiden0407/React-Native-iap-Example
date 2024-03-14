@@ -74,9 +74,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "app.okdoc.insunginfo"
+    namespace "kr.co.insunginfo.okdoc"
     defaultConfig {
-        applicationId "app.okdoc.insunginfo"
+        applicationId "kr.co.insunginfo.okdoc"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 28

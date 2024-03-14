@@ -1,4 +1,4 @@
-package app.okdoc.insunginfo
+package kr.co.insunginfo.okdoc
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

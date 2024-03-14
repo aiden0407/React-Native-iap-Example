@@ -7,9 +7,15 @@ import {
   Button,
   SafeAreaView,
   StyleSheet,
+  Alert,
 } from 'react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
 
-const skus = ['telemedicine.appointment', 'telemedicine.extension'];
+const skus = [
+  'treatment.appointment',
+  'treatment.extension',
+  'internal.staff.token',
+];
 
 const App = () => {
   const {
@@ -34,6 +40,8 @@ const App = () => {
     if (currentPurchase) {
       console.log('==================== currentPurchase ====================');
       console.log(currentPurchase);
+      Clipboard.setString(JSON.stringify(currentPurchase));
+      Alert.alert('결제 성공', '결제 정보 복사 완료');
     }
   }, [currentPurchase]);
 
